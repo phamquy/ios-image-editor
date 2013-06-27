@@ -1,3 +1,5 @@
+
+#import "UIImage+Resize.h"
 #import "HFImageEditorViewController.h"
 
 static const CGFloat kMaxUIImageSize = 1024;
@@ -286,6 +288,7 @@ static const NSTimeInterval kAnimationIntervalTransform = 0.2;
     [self startTransformHook];
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        //        UIImage* resultImage = [self.sourceImage resizedImage:<#(CGSize)#> interpolationQuality:<#(CGInterpolationQuality)#>]
         CGImageRef resultRef = [self newTransformedImage:self.imageView.transform
                                         sourceImage:self.sourceImage.CGImage
                                          sourceSize:self.sourceImage.size
@@ -488,11 +491,12 @@ static const NSTimeInterval kAnimationIntervalTransform = 0.2;
     CGContextRef context = CGBitmapContextCreate(NULL,
                                                  size.width,
                                                  size.height,
-                                                 8, //CGImageGetBitsPerComponent(source),
+                                                 //8, //CGImageGetBitsPerComponent(source),
+                                                 CGImageGetBitsPerComponent(source),
                                                  0,
                                                  CGImageGetColorSpace(source),
-                                                 kCGImageAlphaNoneSkipFirst//CGImageGetBitmapInfo(source)
-                                                 );
+                                                 //kCGImageAlphaNoneSkipFirst
+                                                 CGImageGetBitmapInfo(source));
     
     CGContextSetInterpolationQuality(context, quality);
     CGContextTranslateCTM(context,  size.width/2,  size.height/2);
