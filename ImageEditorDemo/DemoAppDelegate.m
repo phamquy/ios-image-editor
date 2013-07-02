@@ -28,7 +28,7 @@
     UIImagePickerController *picker = [[UIImagePickerController alloc] init];
     
     picker.allowsEditing = NO;
-    picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+    picker.sourceType = UIImagePickerControllerSourceTypeCamera;
     picker.delegate = self;
     self.window.rootViewController = picker;
     [picker release];
@@ -43,11 +43,12 @@
                                       orientation:editedImage.imageOrientation
                                   completionBlock:^(NSURL *assetURL, NSError *error){
                                       if (error) {
-                                          UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error Saving"
-                                                                                          message:[error localizedDescription]
-                                                                                         delegate:nil
-                                                                                cancelButtonTitle:@"Ok"
-                                                                                otherButtonTitles: nil];
+                                          UIAlertView *alert = [[UIAlertView alloc]
+                                                                initWithTitle:@"Error Saving"
+                                                                message:[error localizedDescription]
+                                                                delegate:nil
+                                                                cancelButtonTitle:@"Ok"
+                                                                otherButtonTitles: nil];
                                           [alert show];
                                           [alert release];
                                       }
@@ -62,24 +63,31 @@
 }
 
 
--(void) imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
+-(void) imagePickerController:(UIImagePickerController *)picker
+didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
     UIImage *image =  [info objectForKey:UIImagePickerControllerOriginalImage];
     NSURL *assetURL = [info objectForKey:UIImagePickerControllerReferenceURL];
+    self.imageEditor.sourceImage = image;
+    self.imageEditor.previewImage = image;
+    [self.imageEditor reset:NO];
+    
+    [picker pushViewController:self.imageEditor animated:YES];
+    [picker setNavigationBarHidden:YES animated:NO];
 
-    [self.library assetForURL:assetURL resultBlock:^(ALAsset *asset) {
-        UIImage *preview = [UIImage imageWithCGImage:[asset aspectRatioThumbnail]];
-
-        self.imageEditor.sourceImage = image;
-        self.imageEditor.previewImage = preview;
-        [self.imageEditor reset:NO];
-        
-        [picker pushViewController:self.imageEditor animated:YES];
-        [picker setNavigationBarHidden:YES animated:NO];
-        
-    } failureBlock:^(NSError *error) {
-        NSLog(@"Failed to get asset from library");
-    }];
+//    [self.library assetForURL:assetURL resultBlock:^(ALAsset *asset) {
+//        UIImage *preview = [UIImage imageWithCGImage:[asset aspectRatioThumbnail]];
+//
+//        self.imageEditor.sourceImage = image;
+//        self.imageEditor.previewImage = image;
+//        [self.imageEditor reset:NO];
+//        
+//        [picker pushViewController:self.imageEditor animated:YES];
+//        [picker setNavigationBarHidden:YES animated:NO];
+//        
+//    } failureBlock:^(NSError *error) {
+//        NSLog(@"Failed to get asset from library");
+//    }];
 }
 
 - (void) imagePickerControllerDidCancel:(UIImagePickerController *)picker

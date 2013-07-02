@@ -93,8 +93,8 @@
 		EC23EAF215ECC5610051EA9E /* ImageEditor */ = {
 			isa = PBXGroup;
 			children = (
-				EC23EB0C15ECC5F80051EA9E /* HFImageEditorViewController.h */,
 				EC23E835167B5B7A00314147 /* HFImageEditorViewController+SubclassingHooks.h */,
+				EC23EB0C15ECC5F80051EA9E /* HFImageEditorViewController.h */,
 				EC23EB0D15ECC5F80051EA9E /* HFImageEditorViewController.m */,
 				EC23EB1115ECC6350051EA9E /* HFImageEditorFrameView.h */,
 				EC23EB1215ECC6350051EA9E /* HFImageEditorFrameView.m */,
